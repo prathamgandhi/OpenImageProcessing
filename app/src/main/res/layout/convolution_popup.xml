@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/kernelSizeEditText"
+            android:layout_width="94dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/boxed_edit_text"
+            android:ems="10"
+            android:hint="Kernel Size"
+            android:inputType="number"
+            android:padding="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.798"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.533" />
+
+        <EditText
+            android:id="@+id/scalarEditText"
+            android:layout_width="94dp"
+            android:layout_height="49dp"
+            android:background="@drawable/boxed_edit_text"
+            android:ems="10"
+            android:hint="Scalar Multiplier"
+            android:padding="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.201"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.094" />
+
+        <ScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="356dp"
+                android:layout_height="472dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.498"
+                android:fillViewport="true">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:ignore="SpeakableTextPresentCheck">
+
+                    <TableLayout
+                        android:id="@+id/kernelTable"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="20dp"
+                        android:gravity="center">
+
+                    </TableLayout>
+
+                </HorizontalScrollView>
+            </ScrollView>
+
+        <Button
+            android:id="@+id/generateGridButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginBottom="20dp"
+            android:text="Generate Grid"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+        <Button
+                android:id="@+id/convolveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Go"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.493"
+                app:layout_constraintStart_toEndOf="@+id/generateGridButton"
+                app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

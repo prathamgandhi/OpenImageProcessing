@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">OpenImageProcessing</string>
+    <string-array name="smoothening_operations_array">
+        <item>Normalized Box Filter</item>
+        <item>Square Box Filter</item>
+        <item>Gaussian Filter</item>
+        <item>Median Filter</item>
+    </string-array>
+</resources>
