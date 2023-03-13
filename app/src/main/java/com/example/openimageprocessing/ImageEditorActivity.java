@@ -32,6 +32,8 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
     ImageButton backButton;
     Button convolutionButton, correlationButton, smootheningButton, sharpeningButton;
 
+    UndoRedoStack urStack;
+
     @Override
     public void performNormalizedBoxFilter(int kernelSize) {
         Bitmap bmp32 = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
@@ -40,6 +42,7 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
         Mat dst = new Mat(src.rows(), src.cols(), src.type());
         Imgproc.blur(src, dst, new Size(kernelSize, kernelSize));
         Utils.matToBitmap(dst, bmp32);
+        urStack.newOperation(dst);
         imageEditorView.setImageBitmap(bmp32);
     }
 
@@ -84,6 +87,8 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_editor);
 
+        urStack = new UndoRedoStack();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
@@ -101,6 +106,9 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
         Bitmap bitmap;
         try {
             bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImageUri);
+            Mat mat = new Mat();
+            Utils.bitmapToMat(bitmap.copy(Bitmap.Config.ARGB_8888, true), mat);
+            urStack.newOperation(mat);
             imageEditorView.setImageBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();

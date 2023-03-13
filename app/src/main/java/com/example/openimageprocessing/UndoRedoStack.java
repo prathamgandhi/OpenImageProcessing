@@ -7,7 +7,7 @@ import java.util.Stack;
 
 public class UndoRedoStack {
 
-    private static final int undoStackSize = 5;
+    private static final int undoStackSize = 6;
     private LinkedList<Mat> ll;
     private Stack<Mat> redoStack;
 
@@ -17,7 +17,7 @@ public class UndoRedoStack {
     }
 
     public void newOperation(Mat mat){
-        if(ll.size() == 5){
+        if(ll.size() == 6){
             ll.removeFirst();
         }
         ll.add(mat);
@@ -25,6 +25,7 @@ public class UndoRedoStack {
     }
 
     public Mat undo(){
+        if(ll.size() == 1) return null;
         Mat m = ll.pollLast();
         redoStack.push(m);
         return m;
