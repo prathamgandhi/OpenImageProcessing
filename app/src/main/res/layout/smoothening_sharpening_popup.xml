@@ -9,31 +9,36 @@
         android:id="@+id/spinner"
         android:layout_width="240dp"
         android:layout_height="48dp"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="20dp"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/dataFetchLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.192"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="191dp"
         android:layout_height="50dp"
         android:layout_marginTop="32dp"
-        android:text="Select a operation"
-        android:textSize="18sp"
+        android:text="Select an operation"
+        android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.264" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/dataFetchLinearLayout"
         android:layout_width="348dp"
         android:layout_height="425dp"
         android:layout_marginTop="188dp"
+        android:paddingHorizontal="35dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
@@ -52,6 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/dataFetchLinearLayout"
         app:layout_constraintVertical_bias="1.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

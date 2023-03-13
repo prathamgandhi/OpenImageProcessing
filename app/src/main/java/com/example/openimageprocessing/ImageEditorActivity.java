@@ -19,17 +19,42 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
 import java.util.Objects;
 
-public class ImageEditorActivity extends AppCompatActivity implements KernelPickerDialogFragment.OnInputListener{
+public class ImageEditorActivity extends AppCompatActivity implements KernelPickerDialogFragment.OnInputListener, SmoothingPickerDialogFragment.SmoothingListener{
 
     ImageView imageEditorView;
     ImageButton backButton;
-    Button convolutionButton, correlationButton;
+    Button convolutionButton, correlationButton, smootheningButton, sharpeningButton;
 
+    @Override
+    public void performNormalizedBoxFilter(int kernelSize) {
+        Bitmap bmp32 = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
+        Mat src = new Mat();
+        Utils.bitmapToMat(bmp32, src);
+        Mat dst = new Mat(src.rows(), src.cols(), src.type());
+        Imgproc.blur(src, dst, new Size(kernelSize, kernelSize));
+        Utils.matToBitmap(dst, bmp32);
+        imageEditorView.setImageBitmap(bmp32);
+    }
+
+    @Override
+    public void performSquareBoxFilter(int kernelSize, boolean normalize) {
+        Bitmap bmp32 = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
+        Mat src = new Mat();
+        Utils.bitmapToMat(bmp32, src);
+        Mat dst = new Mat(src.rows(), src.cols(), src.type());
+        Imgproc.sqrBoxFilter(src, dst, CvType.CV_8UC3, new Size(kernelSize, kernelSize), new Point(-1, -1), normalize);
+//        Imgproc.sqrBoxFilter(src, dst, -1, new Size(kernelSize, kernelSize), new Point(-1, -1), normalize);
+        System.out.println(dst.channels() + " " + dst.elemSize());
+        Utils.matToBitmap(dst, bmp32);
+        imageEditorView.setImageBitmap(bmp32);
+    }
 
     @Override
     public void sendConvolutionInput(Mat kernel) {
@@ -69,6 +94,7 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
         backButton = findViewById(R.id.backButton);
         convolutionButton = findViewById(R.id.convolutionButton);
         correlationButton = findViewById(R.id.correlationButton);
+        smootheningButton = findViewById(R.id.smootheningButton);
 
         Intent intent = getIntent();
         Uri selectedImageUri = Uri.parse(intent.getStringExtra("image-uri"));
@@ -91,5 +117,13 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
             DialogFragment kernelPickerDialogFragment = new KernelPickerDialogFragment(KernelPickerDialogFragment.CORRELATION);
             kernelPickerDialogFragment.show(getSupportFragmentManager(), "KernelSelect");
         });
+
+        smootheningButton.setOnClickListener(view -> {
+            DialogFragment smoothingPickerDialogFragment = new SmoothingPickerDialogFragment(SmoothingPickerDialogFragment.SMOOTHENING);
+            smoothingPickerDialogFragment.show(getSupportFragmentManager(), "FilterSelect");
+        });
+
     }
+
+
 }

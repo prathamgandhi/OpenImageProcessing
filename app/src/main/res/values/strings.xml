@@ -1,9 +1,17 @@
 <resources>
     <string name="app_name">OpenImageProcessing</string>
+    <string name="select">Select</string>
+    <string name="normalized_box_filter">Normalized Box Filter</string>
+    <string name="square_box_filter">Square Box Filter</string>
+    <string name="gaussian_filter">Gaussian Filter</string>
+    <string name="median_filter">Median Filter</string>
+
+
     <string-array name="smoothening_operations_array">
-        <item>Normalized Box Filter</item>
-        <item>Square Box Filter</item>
-        <item>Gaussian Filter</item>
-        <item>Median Filter</item>
+        <item>@string/select</item>
+        <item>@string/normalized_box_filter</item>
+        <item>@string/square_box_filter</item>
+        <item>@string/gaussian_filter</item>
+        <item>@string/median_filter</item>
     </string-array>
 </resources>
