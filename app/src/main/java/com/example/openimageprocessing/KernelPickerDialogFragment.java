@@ -24,6 +24,8 @@ import androidx.fragment.app.DialogFragment;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
+
+// The same dialog fragment is responsible for generation of both convolution and correlation dialogs
 public class KernelPickerDialogFragment extends DialogFragment {
 
     private static final String TAG = "KernelPickerDialogFrag";
@@ -92,7 +94,7 @@ public class KernelPickerDialogFragment extends DialogFragment {
                     TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
                     int margin = Utility.convertPixelsToDp(40, getActivity());
                     lp.setMargins(margin, margin, margin, margin);
-
+                    // Got the pixel values by just playing around with values
                     int cellPadding = Utility.convertPixelsToDp(30, getActivity());
                     int cellWidth = Utility.convertPixelsToDp(300, getActivity());
 

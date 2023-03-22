@@ -1,5 +1,12 @@
 package com.example.openimageprocessing;
 
+/*
+   This is the main activity file of this project.
+   OpenCV is statically initialized for this project, because OpenCV Manager is not directly availble for download from Google Play Store.
+   This activity redirects users towards 2 main parts of our project, image editing and document editing.
+   Currently, work is being done in image editing section with document editing being in the future scope.
+ */
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -51,10 +58,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*
-        performAction = findViewById(R.id.performAction);
-        imageDisplayView = findViewById(R.id.imageDisplayView);
-        */
         pickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,22 +74,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        performAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Mat src = new Mat();
-                Bitmap bmp32 = ((BitmapDrawable)imageDisplayView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
-                Utils.bitmapToMat(bmp32, src);
-                Mat dst = new Mat(src.rows(), src.cols(), src.type());
-                Imgproc.GaussianBlur(src, dst, new Size(27,27), 0);
-                Utils.matToBitmap(dst, bmp32);
-                imageDisplayView.setImageBitmap(bmp32);
-            }
-        });
-        */
 
     }
+
+    // Select the same activity after picking the image.
+    
     ActivityResultLauncher<Intent> launchSameActivityOnResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -96,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent data = result.getData();
                         if(data != null && data.getData() != null){
                             Uri selectedImageUri = data.getData();
+                            // Move over to the image editor activity
                             Intent intent = new Intent(MainActivity.this, ImageEditorActivity.class);
                             intent.putExtra("image-uri", selectedImageUri.toString());
                             startActivity(intent);
