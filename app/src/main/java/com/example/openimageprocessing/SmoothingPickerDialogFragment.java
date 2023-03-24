@@ -27,6 +27,8 @@ import androidx.fragment.app.DialogFragment;
 import org.opencv.core.Mat;
 import org.w3c.dom.Text;
 
+// This same dialog framgment is responsible for both smoothing and sharpening actions
+
 public class SmoothingPickerDialogFragment extends DialogFragment {
 
     private static final String TAG = "SmoothingPickDialogFrag";
@@ -49,9 +51,13 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
         this.operation = operation;
     }
 
+
+
     @Override
     public void onResume() {
         super.onResume();
+
+        // Without these 2 lines the soft keyboard won't popup.
         getDialog().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
@@ -59,6 +65,7 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View smootheningSharpeningDialogView = inflater.inflate(R.layout.smoothening_sharpening_popup, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -71,6 +78,7 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
         dialog.setOnShowListener(dialogInterface -> {
             dropdown = smootheningSharpeningDialogView.findViewById(R.id.spinner);
             if(operation == SMOOTHENING){
+                // The various actions specified in the spinner have been listed in the strings.xml resource file.
                 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.smoothening_operations_array, android.R.layout.simple_spinner_dropdown_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 dropdown.setAdapter(adapter);
@@ -79,6 +87,7 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
                         if(adapterView.getItemAtPosition(pos) == getString(R.string.normalized_box_filter)){
                             LinearLayout ll = smootheningSharpeningDialogView.findViewById(R.id.dataFetchLinearLayout);
+                            // remove all views to clear all previously generated views.
                             ll.removeAllViews();
                             EditText et = new EditText(getActivity());
                             TextView tv = new TextView(getActivity());

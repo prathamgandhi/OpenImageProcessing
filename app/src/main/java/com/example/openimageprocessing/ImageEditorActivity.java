@@ -1,5 +1,10 @@
 package com.example.openimageprocessing;
 
+/*
+ * This activity is the editor activity, here the user will get the ability to manipulate images using various image processing techniques.
+*/
+
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -26,6 +31,8 @@ import org.opencv.imgproc.Imgproc;
 import java.io.IOException;
 import java.util.Objects;
 
+
+// The implemented listeners are implemented here which helps to define the specific action to trigger on data retrieved from dialog boxes.
 public class ImageEditorActivity extends AppCompatActivity implements KernelPickerDialogFragment.OnInputListener, SmoothingPickerDialogFragment.SmoothingListener{
 
     ImageView imageEditorView;
@@ -36,6 +43,7 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
 
     @Override
     public void performNormalizedBoxFilter(int kernelSize) {
+        // ARGB_8888 is the bitmap configuration which is compatible with OpenCV library for processing.
         Bitmap bmp32 = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
         Mat src = new Mat();
         Utils.bitmapToMat(bmp32, src);
@@ -89,6 +97,7 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
 
         urStack = new UndoRedoStack();
 
+        // Used to setup the toolbar containing various options such as save, redo, undo, etc.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);

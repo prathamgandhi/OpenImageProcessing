@@ -5,6 +5,7 @@ import org.opencv.core.Mat;
 import java.util.LinkedList;
 import java.util.Stack;
 
+
 public class UndoRedoStack {
 
     private static final int undoStackSize = 6;
