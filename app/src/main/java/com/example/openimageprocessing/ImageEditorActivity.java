@@ -34,63 +34,21 @@ import java.util.Objects;
 
 
 // The implemented listeners are implemented here which helps to define the specific action to trigger on data retrieved from dialog boxes.
-public class ImageEditorActivity extends AppCompatActivity implements KernelPickerDialogFragment.OnInputListener, SmoothingPickerDialogFragment.SmoothingListener{
+public class ImageEditorActivity extends AppCompatActivity /*implements KernelPickerDialogFragment.OnInputListener*/{
 
     ImageView imageEditorView;
     ImageButton backButton;
     Button convolutionButton, correlationButton, smootheningButton, sharpeningButton;
     ImageButton undoButton, redoButton, saveButton;
 
-    UndoRedoStack urStack;
+    public static UndoRedoStack urStack;
+    
 
-    @Override
-    public void performNormalizedBoxFilter(int kernelSize) {
-        // ARGB_8888 is the bitmap configuration which is compatible with OpenCV library for processing.
-        Bitmap bmp32 = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
-        Mat src = new Mat();
-        Utils.bitmapToMat(bmp32, src);
-        Mat dst = new Mat(src.rows(), src.cols(), src.type());
-        Imgproc.blur(src, dst, new Size(kernelSize, kernelSize));
-        Utils.matToBitmap(dst, bmp32);
-        urStack.newOperation(dst);
-        imageEditorView.setImageBitmap(bmp32);
-    }
+    
 
-    @Override
-    public void performSquareBoxFilter(int kernelSize, boolean normalize) {
-        Bitmap bmp32 = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
-        Mat src = new Mat();
-        Utils.bitmapToMat(bmp32, src);
-        Mat dst = new Mat(src.rows(), src.cols(), src.type());
-        Imgproc.sqrBoxFilter(src, dst, CvType.CV_8UC3, new Size(kernelSize, kernelSize), new Point(-1, -1), normalize);
-//        Imgproc.sqrBoxFilter(src, dst, -1, new Size(kernelSize, kernelSize), new Point(-1, -1), normalize);
-        System.out.println(dst.channels() + " " + dst.elemSize());
-        Utils.matToBitmap(dst, bmp32);
-        imageEditorView.setImageBitmap(bmp32);
-    }
+   
 
-    @Override
-    public void sendConvolutionInput(Mat kernel) {
-        Core.flip(kernel, kernel, -1);
-        Bitmap bmp32 = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
-        Mat src = new Mat();
-        Utils.bitmapToMat(bmp32, src);
-        Mat dst = new Mat(src.rows(), src.cols(), src.type());
-        Imgproc.filter2D(src, dst, CvType.CV_8U, kernel);
-        Utils.matToBitmap(dst, bmp32);
-        imageEditorView.setImageBitmap(bmp32);
-    }
 
-    @Override
-    public void sendCorrelationInput(Mat kernel) {
-        Bitmap bmp32 = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
-        Mat src = new Mat();
-        Utils.bitmapToMat(bmp32, src);
-        Mat dst = new Mat(src.rows(), src.cols(), src.type());
-        Imgproc.filter2D(src, dst, CvType.CV_8U, kernel);
-        Utils.matToBitmap(dst, bmp32);
-        imageEditorView.setImageBitmap(bmp32);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,5 +121,6 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
         });
     }
 
+    
 
 }

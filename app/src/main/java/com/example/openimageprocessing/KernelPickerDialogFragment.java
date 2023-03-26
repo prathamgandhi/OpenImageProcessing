@@ -120,20 +120,26 @@ public class KernelPickerDialogFragment extends DialogFragment {
 
             convolveButton.setOnClickListener(view -> {
                 EditText kernelCells[][] = getSharableKernelCells();
-                int dim = kernelCells.length;
-                Mat mat = new Mat(dim, dim, CvType.CV_64F);
-                for(int i = 0; i < dim; i++){
-                    for(int j = 0; j < dim; j++){
-                        mat.put(i, j, Float.parseFloat(kernelCells[i][j].getText().toString())*Float.parseFloat(scalarEditText.getText().toString()));
+                if(kernelCells == null){
+                    Toast.makeText(getActivity(), "Fill the complete matrix", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    int dim = kernelCells.length;
+                    Mat mat = new Mat(dim, dim, CvType.CV_64F);
+                    for(int i = 0; i < dim; i++){
+                        for(int j = 0; j < dim; j++){
+                            mat.put(i, j, Float.parseFloat(kernelCells[i][j].getText().toString())*Float.parseFloat(scalarEditText.getText().toString()));
+                        }
                     }
+                    if(operation == CONVOLUTION){
+                        matOnInputListener.sendConvolutionInput(mat);
+                    }
+                    else if(operation == CORRELATION){
+                        matOnInputListener.sendCorrelationInput(mat);
+                    }
+                    getDialog().dismiss();
                 }
-                if(operation == CONVOLUTION){
-                    matOnInputListener.sendConvolutionInput(mat);
-                }
-                else if(operation == CORRELATION){
-                    matOnInputListener.sendCorrelationInput(mat);
-                }
-                getDialog().dismiss();
+                
             });
         });
 
@@ -144,7 +150,7 @@ public class KernelPickerDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try{
-            matOnInputListener = (OnInputListener) getActivity();
+            matOnInputListener = new ConvolutionCorrelationOperations(getActivity());
         }
         catch(ClassCastException e){
             Log.e(TAG, "onAttach: ClassCastException: "

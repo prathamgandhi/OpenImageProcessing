@@ -159,7 +159,7 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try{
-            smoothingListener = (SmoothingPickerDialogFragment.SmoothingListener) getActivity();
+            smoothingListener = new SmoothingSharpeningOperations(getActivity());
         }
         catch(ClassCastException e){
             Log.e(TAG, "onAttach: ClassCastException: "
