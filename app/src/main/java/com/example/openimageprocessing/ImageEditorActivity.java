@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
@@ -38,6 +39,7 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
     ImageView imageEditorView;
     ImageButton backButton;
     Button convolutionButton, correlationButton, smootheningButton, sharpeningButton;
+    ImageButton undoButton, redoButton, saveButton;
 
     UndoRedoStack urStack;
 
@@ -109,6 +111,8 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
         convolutionButton = findViewById(R.id.convolutionButton);
         correlationButton = findViewById(R.id.correlationButton);
         smootheningButton = findViewById(R.id.smootheningButton);
+        undoButton = findViewById(R.id.undoButton);
+        redoButton = findViewById(R.id.redoButton);
 
         Intent intent = getIntent();
         Uri selectedImageUri = Uri.parse(intent.getStringExtra("image-uri"));
@@ -140,6 +144,23 @@ public class ImageEditorActivity extends AppCompatActivity implements KernelPick
             smoothingPickerDialogFragment.show(getSupportFragmentManager(), "FilterSelect");
         });
 
+        undoButton.setOnClickListener(view -> {
+            Mat uMat = urStack.undo();
+            if (uMat != null){
+                Bitmap bmp32 = Bitmap.createBitmap(uMat.cols(), uMat.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(uMat, bmp32);
+                imageEditorView.setImageBitmap(bmp32);
+            }
+        });
+
+        redoButton.setOnClickListener(view -> {
+            Mat rMat = urStack.redo();
+            if (rMat != null){
+                Bitmap bmp32 = Bitmap.createBitmap(rMat.cols(), rMat.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(rMat, bmp32);
+                imageEditorView.setImageBitmap(bmp32);
+            }
+        });
     }
 
 

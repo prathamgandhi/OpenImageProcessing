@@ -23,17 +23,21 @@ public class UndoRedoStack {
         }
         ll.add(mat);
         redoStack.clear();
+        System.out.println(ll.size());
     }
 
     public Mat undo(){
         if(ll.size() == 1) return null;
         Mat m = ll.pollLast();
         redoStack.push(m);
-        return m;
+        return ll.getLast();
     }
 
     public Mat redo(){
-        return redoStack.pop();
+        if(redoStack.empty()) return null;
+        Mat m = redoStack.pop();
+        ll.add(m);
+        return m;
     }
 
 
