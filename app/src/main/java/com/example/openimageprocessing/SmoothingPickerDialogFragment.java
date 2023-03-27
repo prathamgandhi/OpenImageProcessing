@@ -43,6 +43,8 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
     public interface SmoothingListener{
         void performNormalizedBoxFilter(int kernelSize);
         void performSquareBoxFilter(int kernelSize, boolean normalize);
+        void performGaussianFilter(int kernelSize, double sigma);
+        void performMedianFilter(int kernelSize);
     }
 
     public SmoothingListener smoothingListener;
@@ -131,10 +133,59 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
                             });
                         }
                         else if(adapterView.getItemAtPosition(pos) == getString(R.string.gaussian_filter)){
+                            LinearLayout ll = smootheningSharpeningDialogView.findViewById(R.id.dataFetchLinearLayout);
+                            ll.removeAllViews();
+                            EditText kernelSizeEditText = new EditText(getActivity());
+                            EditText sigmaEditText = new EditText(getActivity());
+                            TextView kernelSizeTextView = new TextView(getActivity());
+                            TextView sigmaTextView = new TextView(getActivity());
+                            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            kernelSizeEditText.setLayoutParams(p);
+                            kernelSizeEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            sigmaEditText.setLayoutParams(p);
+                            sigmaEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            kernelSizeTextView.setText("Enter Kernel Size : ");
+                            sigmaTextView.setText("Enter Sigma Value : ");
+
+                            ll.addView(kernelSizeTextView);
+                            ll.addView(kernelSizeEditText);
+                            ll.addView(sigmaTextView);
+                            ll.addView(sigmaEditText);
+
+                            Button goButton = smootheningSharpeningDialogView.findViewById(R.id.ssOperation);
+                            goButton.setOnClickListener(view1 -> {
+                                int kernelSize = Integer.parseInt(kernelSizeEditText.getText().toString());
+                                double sigma = Double.parseDouble(sigmaEditText.getText().toString());
+                                smoothingListener.performGaussianFilter(kernelSize, sigma);
+                                getDialog().dismiss();
+                            });
 
                         }
                         else if(adapterView.getItemAtPosition(pos) == getString(R.string.median_filter)){
+                            LinearLayout ll = smootheningSharpeningDialogView.findViewById(R.id.dataFetchLinearLayout);
 
+                            ll.removeAllViews();
+                            EditText et = new EditText(getActivity());
+                            TextView tv = new TextView(getActivity());
+                            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            et.setLayoutParams(p);
+                            et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            tv.setText("Enter Kernel Size : ");
+                            ll.addView(tv);
+                            ll.addView(et);
+
+                            Button goButton = smootheningSharpeningDialogView.findViewById(R.id.ssOperation);
+                            goButton.setOnClickListener(view1 -> {
+                                int kernelSize = Integer.parseInt(et.getText().toString());
+                                if(kernelSize % 2 == 0){
+                                    Toast.makeText(getActivity(),"KernelSize should be odd",Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    System.out.println(kernelSize);
+                                    smoothingListener.performMedianFilter(kernelSize);
+                                    getDialog().dismiss();
+                                }
+                            });
                         }
                         else{
 
@@ -143,7 +194,7 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        
                     }
                 });
             }

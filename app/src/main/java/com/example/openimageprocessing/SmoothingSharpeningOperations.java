@@ -27,4 +27,19 @@ public class SmoothingSharpeningOperations extends Operations implements Smoothi
         Imgproc.sqrBoxFilter(src, dst, CvType.CV_8UC3, new Size(kernelSize, kernelSize), new Point(-1, -1), normalize);
         loadMatInImageAfterProcessing();
     } 
+
+    @Override
+    public void performGaussianFilter(int kernelSize, double sigma){
+        loadImageInMatForProcessing();
+        Imgproc.GaussianBlur(src, dst, new Size(kernelSize, kernelSize), sigma);
+        loadMatInImageAfterProcessing();
+    }
+
+    @Override
+    public void performMedianFilter(int kernelSize){
+        loadImageInMatForProcessing();
+        Imgproc.medianBlur(src, dst, kernelSize);
+        loadImageInMatForProcessing();
+    }
+
 }
