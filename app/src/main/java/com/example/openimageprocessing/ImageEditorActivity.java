@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+import android.content.ContentValues;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -31,10 +33,9 @@ import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.io.OutputStream; 
 
-
-// The implemented listeners are implemented here which helps to define the specific action to trigger on data retrieved from dialog boxes.
-public class ImageEditorActivity extends AppCompatActivity /*implements KernelPickerDialogFragment.OnInputListener*/{
+public class ImageEditorActivity extends AppCompatActivity {
 
     ImageView imageEditorView;
     ImageButton backButton;
@@ -42,13 +43,6 @@ public class ImageEditorActivity extends AppCompatActivity /*implements KernelPi
     ImageButton undoButton, redoButton, saveButton;
 
     public static UndoRedoStack urStack;
-    
-
-    
-
-   
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +65,7 @@ public class ImageEditorActivity extends AppCompatActivity /*implements KernelPi
         smootheningButton = findViewById(R.id.smootheningButton);
         undoButton = findViewById(R.id.undoButton);
         redoButton = findViewById(R.id.redoButton);
+        saveButton = findViewById(R.id.saveButton);
 
         Intent intent = getIntent();
         Uri selectedImageUri = Uri.parse(intent.getStringExtra("image-uri"));
@@ -117,6 +112,26 @@ public class ImageEditorActivity extends AppCompatActivity /*implements KernelPi
                 Bitmap bmp32 = Bitmap.createBitmap(rMat.cols(), rMat.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(rMat, bmp32);
                 imageEditorView.setImageBitmap(bmp32);
+            }
+        });
+
+        saveButton.setOnClickListener(view -> {
+            Bitmap saveBmp = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap();
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, "any_picture_name");
+            values.put(MediaStore.Images.Media.BUCKET_ID, "test");
+            values.put(MediaStore.Images.Media.DESCRIPTION, "test Image taken");
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            OutputStream outstream;
+            try {
+                outstream = getContentResolver().openOutputStream(uri);
+                saveBmp.compress(Bitmap.CompressFormat.JPEG, 70, outstream);
+                outstream.close();
+                Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }
