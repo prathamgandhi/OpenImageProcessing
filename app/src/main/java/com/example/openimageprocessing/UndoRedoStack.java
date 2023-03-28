@@ -28,19 +28,15 @@ public class UndoRedoStack {
 
     public Mat undo(){
         if(ll.size() == 1) return null;
-        System.out.println("Current stack size : " + ll.size());
         Mat m = ll.pollLast();
         redoStack.push(m);
-        System.out.println("Current stack size after undo : " + ll.size());
         return ll.getLast();
     }
 
     public Mat redo(){
         if(redoStack.empty()) return null;
-        System.out.println("Current stack size: " + ll.size());
         Mat m = redoStack.pop();
         ll.add(m);
-        System.out.println("Current stack size after redo: " + ll.size());
         return m;
     }
 

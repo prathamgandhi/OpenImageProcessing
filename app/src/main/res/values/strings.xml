@@ -7,6 +7,7 @@
     <string name="median_filter">Median Filter</string>
     <string name="laplacian_filter">Laplacian Filter</string>
     <string name="high_boost_filtering">High Boost Filter</string>
+    <string name="unsharp_masking">Unsharp Masking</string>
 
     <string-array name="smoothening_operations_array">
         <item>@string/select</item>
@@ -19,6 +20,7 @@
     <string-array name="sharpening_operations_array">
         <item>@string/laplacian_filter</item>
         <item>@string/high_boost_filtering</item>
+        <item>@string/unsharp_masking</item>
     </string-array>
 
 </resources>
