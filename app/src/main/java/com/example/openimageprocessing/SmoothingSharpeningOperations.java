@@ -46,7 +46,8 @@ public class SmoothingSharpeningOperations extends Operations implements Smoothi
     @Override
     public void performLaplacianFilter(int kernelSize){
         loadImageInMatForProcessing();
-        Imgproc.Laplacian(src, dst, CvType.CV_32F, kernelSize);
+        Imgproc.Laplacian(src, dst, CvType.CV_64F, kernelSize);
+        dst.convertTo(dst, CvType.CV_8U);
         loadMatInImageAfterProcessing();
     }
 
