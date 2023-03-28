@@ -5,7 +5,8 @@
     <string name="square_box_filter">Square Box Filter</string>
     <string name="gaussian_filter">Gaussian Filter</string>
     <string name="median_filter">Median Filter</string>
-
+    <string name="laplacian_filter">Laplacian Filter</string>
+    <string name="high_boost_filtering">High Boost Filter</string>
 
     <string-array name="smoothening_operations_array">
         <item>@string/select</item>
@@ -14,4 +15,10 @@
         <item>@string/gaussian_filter</item>
         <item>@string/median_filter</item>
     </string-array>
+
+    <string-array name="sharpening_operations_array">
+        <item>@string/laplacian_filter</item>
+        <item>@string/high_boost_filtering</item>
+    </string-array>
+
 </resources>

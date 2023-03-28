@@ -8,7 +8,7 @@ import org.opencv.core.Mat;
 
 import androidx.fragment.app.FragmentActivity;
 
-public class SmoothingSharpeningOperations extends Operations implements SmoothingPickerDialogFragment.SmoothingListener{
+public class SmoothingSharpeningOperations extends Operations implements SmoothingPickerDialogFragment.SmoothingListener, SmoothingPickerDialogFragment.SharpeningListener{
 
     public SmoothingSharpeningOperations(FragmentActivity activity){
         super(activity);
@@ -38,8 +38,21 @@ public class SmoothingSharpeningOperations extends Operations implements Smoothi
     @Override
     public void performMedianFilter(int kernelSize){
         loadImageInMatForProcessing();
+        Imgproc.cvtColor(src, src, Imgproc.COLOR_RGB2GRAY);
         Imgproc.medianBlur(src, dst, kernelSize);
+        loadMatInImageAfterProcessing();
+    }
+
+    @Override
+    public void performLaplacianFilter(int kernelSize){
         loadImageInMatForProcessing();
+        Imgproc.Laplacian(src, dst, CvType.CV_32F, kernelSize);
+        loadMatInImageAfterProcessing();
+    }
+
+    @Override
+    public void performHighBoostFilter(){
+
     }
 
 }

@@ -120,12 +120,14 @@
 
             <Button
                 android:id="@+id/smootheningButton"
-                android:text="Smooth"
-                android:textSize="9sp"
+                android:text="Smoothen"
+                android:textSize="7sp"
                 style="@style/ImageEditingButtonStyle"></Button>
 
             <Button
                 android:id="@+id/sharpeningButton"
+                android:text="Sharpen"
+                android:textSize="7sp"
                 style="@style/ImageEditingButtonStyle">
 
             </Button>

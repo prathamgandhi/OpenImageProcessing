@@ -47,7 +47,13 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
         void performMedianFilter(int kernelSize);
     }
 
+    public interface SharpeningListener{
+        void performLaplacianFilter(int kernelSize);
+        void performHighBoostFilter();
+    }
+
     public SmoothingListener smoothingListener;
+    public SharpeningListener sharpeningListener;
 
     SmoothingPickerDialogFragment(int operation){
         this.operation = operation;
@@ -199,7 +205,41 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
                 });
             }
             if(operation == SHARPENING){
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.sharpening_operations_array, android.R.layout.simple_spinner_dropdown_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                dropdown.setAdapter(adapter);
+                dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id){
+                        if(adapterView.getItemAtPosition(pos) == getString(R.string.laplacian_filter)){
+                            LinearLayout ll = smootheningSharpeningDialogView.findViewById(R.id.dataFetchLinearLayout);
+                            // remove all views to clear all previously generated views.
+                            ll.removeAllViews();
+                            EditText et = new EditText(getActivity());
+                            TextView tv = new TextView(getActivity());
+                            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            et.setLayoutParams(p);
+                            et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            tv.setText("Enter Kernel Size : ");
+                            ll.addView(tv);
+                            ll.addView(et);
 
+                            Button goButton = smootheningSharpeningDialogView.findViewById(R.id.ssOperation);
+                            goButton.setOnClickListener(view1 -> {
+                                int kernelSize = Integer.parseInt(et.getText().toString());
+                                sharpeningListener.performLaplacianFilter(kernelSize);
+                                getDialog().dismiss();
+                            });
+                        }
+                        else if(adapterView.getItemAtPosition(pos) == getString(R.string.high_boost_filtering)){
+
+                        }
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        
+                    }
+                });
             }
         });
 
@@ -210,7 +250,9 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try{
-            smoothingListener = new SmoothingSharpeningOperations(getActivity());
+            SmoothingSharpeningOperations smoothingSharpeningListener = new SmoothingSharpeningOperations(getActivity());
+            smoothingListener = smoothingSharpeningListener;
+            sharpeningListener = smoothingSharpeningListener;
         }
         catch(ClassCastException e){
             Log.e(TAG, "onAttach: ClassCastException: "
