@@ -11,31 +11,27 @@
 
         <EditText
             android:id="@+id/kernelSizeEditText"
-            android:layout_width="169dp"
-            android:layout_height="51dp"
-            android:layout_marginTop="68dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/scalarEditText"
             android:background="@drawable/boxed_edit_text"
-            android:ems="10"
             android:hint="Kernel Size"
             android:inputType="number"
             android:padding="5dp"
-            app:layout_constraintEnd_toStartOf="@+id/scalarEditText"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="122dp" />
 
         <EditText
             android:id="@+id/scalarEditText"
-            android:layout_width="152dp"
-            android:layout_height="47dp"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:background="@drawable/boxed_edit_text"
-            android:ems="10"
             android:hint="Scalar Multiplier"
+            android:inputType="number"
             android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/kernelSizeEditText"
-            app:layout_constraintTop_toTopOf="@+id/kernelSizeEditText" />
+            app:layout_constraintLeft_toRightOf="@id/kernelSizeEditText"
+            tools:layout_editor_absoluteY="122dp" />
 
         <ScrollView
             android:id="@+id/scrollView2"
