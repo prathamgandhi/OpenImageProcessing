@@ -125,27 +125,24 @@
                 style="@style/ImageEditingButtonStyle"></Button>
 
             <Button
-<<<<<<< HEAD
                 android:id="@+id/fourier"
                 android:text="Fourier Transform"
-                tes
-
-=======
-                android:id="@+id/sharpeningButton"
-                android:text="Sharpen"
                 android:textSize="7sp"
->>>>>>> 00dfe10c50de2dcd4bfed847ffe4d1c261bf3d0c
                 style="@style/ImageEditingButtonStyle">
 
             </Button>
 
             <Button
                 android:id="@+id/histogramButton"
-                style="@style/ImageEditingButtonStyle"></Button>
+                style="@style/ImageEditingButtonStyle">
+
+            </Button>
 
             <Button
                 android:id="@+id/morphologicalButton"
-                style="@style/ImageEditingButtonStyle"></Button>
+                style="@style/ImageEditingButtonStyle">
+
+            </Button>
 
         </LinearLayout>
     </HorizontalScrollView>

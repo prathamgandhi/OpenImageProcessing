@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/phasetext"
+        android:layout_width="193dp"
+        android:layout_height="29dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="1dp"
+        android:gravity="center"
+        android:text="Phase"
+        android:textColor="#000000"
+        tools:layout_editor_absoluteX="111dp"
+        tools:layout_editor_absoluteY="547dp" />
+
+    <ImageView
+        android:id="@+id/Amplitude"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="197dp"
+        android:layout_height="203dp"
+        tools:layout_editor_absoluteX="107dp"
+        tools:layout_editor_absoluteY="54dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/Amplitudetext"
+        android:layout_width="193dp"
+        android:layout_height="29dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="1dp"
+        android:gravity="center"
+        android:text="Amplitude"
+        android:textColor="#000000"
+        tools:layout_editor_absoluteX="109dp"
+        tools:layout_editor_absoluteY="269dp" />
+
+    <ImageView
+        android:id="@+id/phase"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="197dp"
+        android:layout_height="203dp"
+        tools:layout_editor_absoluteX="107dp"
+        tools:layout_editor_absoluteY="322dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/merge2images"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Merge two images using FFT"
+        tools:layout_editor_absoluteX="90dp"
+        tools:layout_editor_absoluteY="608dp" />
+
+    <Button
+        android:id="@+id/convtheorem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Using Convolution Theorem"
+        tools:layout_editor_absoluteX="90dp"
+        tools:layout_editor_absoluteY="690dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
