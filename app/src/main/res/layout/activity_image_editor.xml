@@ -125,7 +125,10 @@
                 style="@style/ImageEditingButtonStyle"></Button>
 
             <Button
-                android:id="@+id/sharpeningButton"
+                android:id="@+id/fourier"
+                android:text="Fourier Transform"
+                tes
+
                 style="@style/ImageEditingButtonStyle">
 
             </Button>
