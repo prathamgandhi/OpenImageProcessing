@@ -133,7 +133,7 @@
             </Button>
 
             <Button
-                android:id="@+id/fourier"
+                android:id="@+id/fourierButton"
                 android:text="Fourier Transform"
                 android:textSize="7sp"
                 style="@style/ImageEditingButtonStyle">
