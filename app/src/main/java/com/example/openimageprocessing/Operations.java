@@ -2,6 +2,7 @@ package com.example.openimageprocessing;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.core.CvType;
 
 import androidx.fragment.app.FragmentActivity;
 

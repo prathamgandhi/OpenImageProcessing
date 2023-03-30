@@ -63,6 +63,8 @@ public class ImageEditorActivity extends AppCompatActivity {
         convolutionButton = findViewById(R.id.convolutionButton);
         correlationButton = findViewById(R.id.correlationButton);
         smootheningButton = findViewById(R.id.smootheningButton);
+        sharpeningButton = findViewById(R.id.sharpeningButton);
+
         undoButton = findViewById(R.id.undoButton);
         redoButton = findViewById(R.id.redoButton);
         saveButton = findViewById(R.id.saveButton);
@@ -94,6 +96,11 @@ public class ImageEditorActivity extends AppCompatActivity {
 
         smootheningButton.setOnClickListener(view -> {
             DialogFragment smoothingPickerDialogFragment = new SmoothingPickerDialogFragment(SmoothingPickerDialogFragment.SMOOTHENING);
+            smoothingPickerDialogFragment.show(getSupportFragmentManager(), "FilterSelect");
+        });
+
+        sharpeningButton.setOnClickListener(view -> {
+            DialogFragment smoothingPickerDialogFragment = new SmoothingPickerDialogFragment(SmoothingPickerDialogFragment.SHARPENING);
             smoothingPickerDialogFragment.show(getSupportFragmentManager(), "FilterSelect");
         });
 

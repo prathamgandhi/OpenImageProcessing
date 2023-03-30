@@ -47,7 +47,14 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
         void performMedianFilter(int kernelSize);
     }
 
+    public interface SharpeningListener{
+        void performLaplacianFilter(int kernelSize);
+        void performHighBoostFilter(int kernelSize, double sigma, double k);
+        void performUnsharpMasking(int kernelSize, double sigma);
+    }
+
     public SmoothingListener smoothingListener;
+    public SharpeningListener sharpeningListener;
 
     SmoothingPickerDialogFragment(int operation){
         this.operation = operation;
@@ -155,9 +162,14 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
                             Button goButton = smootheningSharpeningDialogView.findViewById(R.id.ssOperation);
                             goButton.setOnClickListener(view1 -> {
                                 int kernelSize = Integer.parseInt(kernelSizeEditText.getText().toString());
-                                double sigma = Double.parseDouble(sigmaEditText.getText().toString());
-                                smoothingListener.performGaussianFilter(kernelSize, sigma);
-                                getDialog().dismiss();
+                                if(kernelSize % 2 == 0){
+                                    Toast.makeText(getActivity(),"KernelSize should be odd or 0",Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    double sigma = Double.parseDouble(sigmaEditText.getText().toString());
+                                    smoothingListener.performGaussianFilter(kernelSize, sigma);
+                                    getDialog().dismiss();
+                                }
                             });
 
                         }
@@ -181,7 +193,6 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
                                     Toast.makeText(getActivity(),"KernelSize should be odd",Toast.LENGTH_LONG).show();
                                 }
                                 else{
-                                    System.out.println(kernelSize);
                                     smoothingListener.performMedianFilter(kernelSize);
                                     getDialog().dismiss();
                                 }
@@ -199,7 +210,124 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
                 });
             }
             if(operation == SHARPENING){
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.sharpening_operations_array, android.R.layout.simple_spinner_dropdown_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                dropdown.setAdapter(adapter);
+                dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id){
+                        if(adapterView.getItemAtPosition(pos) == getString(R.string.laplacian_filter)){
+                            LinearLayout ll = smootheningSharpeningDialogView.findViewById(R.id.dataFetchLinearLayout);
+                            // remove all views to clear all previously generated views.
+                            ll.removeAllViews();
+                            EditText et = new EditText(getActivity());
+                            TextView tv = new TextView(getActivity());
+                            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            et.setLayoutParams(p);
+                            et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            tv.setText("Enter Kernel Size : ");
+                            ll.addView(tv);
+                            ll.addView(et);
 
+                            Button goButton = smootheningSharpeningDialogView.findViewById(R.id.ssOperation);
+                            goButton.setOnClickListener(view1 -> {
+                                int kernelSize = Integer.parseInt(et.getText().toString());
+                                if(kernelSize % 2 == 0) {
+                                    Toast.makeText(getActivity(),"KernelSize should be odd",Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    sharpeningListener.performLaplacianFilter(kernelSize);
+                                    getDialog().dismiss();
+                                }
+                            });
+                        }
+                        else if(adapterView.getItemAtPosition(pos) == getString(R.string.high_boost_filtering)){
+                            LinearLayout ll = smootheningSharpeningDialogView.findViewById(R.id.dataFetchLinearLayout);
+                            // remove all views to clear all previously generated views.
+                            ll.removeAllViews();
+                            EditText kernelSizeEditText= new EditText(getActivity());
+                            TextView kernelSizeTextView = new TextView(getActivity());
+                            EditText sigmaEditText = new EditText(getActivity());
+                            TextView sigmaTextView = new TextView(getActivity());
+                            EditText kEditText = new EditText(getActivity());
+                            TextView kTextView = new TextView(getActivity());
+                            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            kernelSizeEditText.setLayoutParams(p);
+                            kernelSizeEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            sigmaEditText.setLayoutParams(p);
+                            sigmaEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            kEditText.setLayoutParams(p);
+                            kEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            kernelSizeTextView.setText("Enter Kernel Size : ");
+                            sigmaTextView.setText("Enter Standard Deviation : ");
+                            kTextView.setText("Enter the Boosting Factor ( > 1)");
+                            ll.addView(kernelSizeTextView);
+                            ll.addView(kernelSizeEditText);
+                            ll.addView(sigmaTextView);
+                            ll.addView(sigmaEditText);
+                            ll.addView(kTextView);
+                            ll.addView(kEditText);
+
+                            Button goButton = smootheningSharpeningDialogView.findViewById(R.id.ssOperation);
+                            goButton.setOnClickListener(view1 -> {
+                                int kernelSize = Integer.parseInt(kernelSizeEditText.getText().toString());
+                                if(kernelSize % 2 == 0 && kernelSize != 0){
+                                    Toast.makeText(getActivity(),"KernelSize should be odd or 0",Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    double sigma = Double.parseDouble(sigmaEditText.getText().toString());
+                                    double k = Double.parseDouble(kEditText.getText().toString());
+                                    if(k <= 1){
+                                        sharpeningListener.performHighBoostFilter(kernelSize, sigma, 1);
+                                    }
+                                    else{
+                                        sharpeningListener.performHighBoostFilter(kernelSize, sigma, k);
+                                    }
+                                    getDialog().dismiss();
+
+                                }
+                            });
+                        }
+                        else if(adapterView.getItemAtPosition(pos) == getString(R.string.unsharp_masking)){
+                            LinearLayout ll = smootheningSharpeningDialogView.findViewById(R.id.dataFetchLinearLayout);
+                            // remove all views to clear all previously generated views.
+                            ll.removeAllViews();
+                            EditText kernelSizeEditText= new EditText(getActivity());
+                            TextView kernelSizeTextView = new TextView(getActivity());
+                            EditText sigmaEditText = new EditText(getActivity());
+                            TextView sigmaTextView = new TextView(getActivity());
+                            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            kernelSizeEditText.setLayoutParams(p);
+                            kernelSizeEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            sigmaEditText.setLayoutParams(p);
+                            sigmaEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            kernelSizeTextView.setText("Enter Kernel Size : ");
+                            sigmaTextView.setText("Enter Standard Deviation : ");
+                            ll.addView(kernelSizeTextView);
+                            ll.addView(kernelSizeEditText);
+                            ll.addView(sigmaTextView);
+                            ll.addView(sigmaEditText);
+
+                            Button goButton = smootheningSharpeningDialogView.findViewById(R.id.ssOperation);
+                            goButton.setOnClickListener(view1 -> {
+                                int kernelSize = Integer.parseInt(kernelSizeEditText.getText().toString());
+                                if(kernelSize % 2 == 0 && kernelSize != 0){
+                                    Toast.makeText(getActivity(),"KernelSize should be odd or 0",Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    double sigma = Double.parseDouble(sigmaEditText.getText().toString());
+                                    sharpeningListener.performUnsharpMasking(kernelSize, sigma);
+                                    getDialog().dismiss();
+
+                                }
+                            });
+                        }
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        
+                    }
+                });
             }
         });
 
@@ -210,7 +338,9 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try{
-            smoothingListener = new SmoothingSharpeningOperations(getActivity());
+            SmoothingSharpeningOperations smoothingSharpeningListener = new SmoothingSharpeningOperations(getActivity());
+            smoothingListener = smoothingSharpeningListener;
+            sharpeningListener = smoothingSharpeningListener;
         }
         catch(ClassCastException e){
             Log.e(TAG, "onAttach: ClassCastException: "

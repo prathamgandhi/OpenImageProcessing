@@ -120,15 +120,21 @@
 
             <Button
                 android:id="@+id/smootheningButton"
-                android:text="Smooth"
-                android:textSize="9sp"
+                android:text="Smoothen"
+                android:textSize="7sp"
                 style="@style/ImageEditingButtonStyle"></Button>
 
             <Button
+<<<<<<< HEAD
                 android:id="@+id/fourier"
                 android:text="Fourier Transform"
                 tes
 
+=======
+                android:id="@+id/sharpeningButton"
+                android:text="Sharpen"
+                android:textSize="7sp"
+>>>>>>> 00dfe10c50de2dcd4bfed847ffe4d1c261bf3d0c
                 style="@style/ImageEditingButtonStyle">
 
             </Button>
