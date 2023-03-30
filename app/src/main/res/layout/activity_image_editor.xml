@@ -125,15 +125,17 @@
                 style="@style/ImageEditingButtonStyle"></Button>
 
             <Button
-                android:id="@+id/fourier"
-                android:text="Fourier Transform"
+                android:id="@+id/sharpeningButton"
+                android:text="Sharpen"
                 android:textSize="7sp"
                 style="@style/ImageEditingButtonStyle">
 
             </Button>
 
             <Button
-                android:id="@+id/histogramButton"
+                android:id="@+id/fourier"
+                android:text="Fourier Transform"
+                android:textSize="7sp"
                 style="@style/ImageEditingButtonStyle">
 
             </Button>

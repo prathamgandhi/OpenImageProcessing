@@ -63,7 +63,7 @@ public class ImageEditorActivity extends AppCompatActivity {
         convolutionButton = findViewById(R.id.convolutionButton);
         correlationButton = findViewById(R.id.correlationButton);
         smootheningButton = findViewById(R.id.smootheningButton);
-
+        sharpeningButton = findViewById(R.id.sharpeningButton);
 
         undoButton = findViewById(R.id.undoButton);
         redoButton = findViewById(R.id.redoButton);
