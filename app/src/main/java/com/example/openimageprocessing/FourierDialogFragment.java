@@ -42,14 +42,14 @@ public class FourierDialogFragment extends DialogFragment {
     public FourierListener fourierListener;
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    // @Override
+    // public void onResume() {
+    //     super.onResume();
 
-        // Without these 2 lines the soft keyboard won't popup.
-        getDialog().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-    }
+    //     // Without these 2 lines the soft keyboard won't popup.
+    //     getDialog().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+    //     getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    // }
 
     @NonNull
     @Override
