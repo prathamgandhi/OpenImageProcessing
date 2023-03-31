@@ -133,12 +133,18 @@
             </Button>
 
             <Button
-                android:id="@+id/histogramButton"
-                style="@style/ImageEditingButtonStyle"></Button>
+                android:id="@+id/fourierButton"
+                android:text="Fourier Transform"
+                android:textSize="7sp"
+                style="@style/ImageEditingButtonStyle">
+
+            </Button>
 
             <Button
                 android:id="@+id/morphologicalButton"
-                style="@style/ImageEditingButtonStyle"></Button>
+                style="@style/ImageEditingButtonStyle">
+
+            </Button>
 
         </LinearLayout>
     </HorizontalScrollView>

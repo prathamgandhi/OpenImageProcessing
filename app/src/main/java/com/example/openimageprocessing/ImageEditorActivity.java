@@ -39,7 +39,7 @@ public class ImageEditorActivity extends AppCompatActivity {
 
     ImageView imageEditorView;
     ImageButton backButton;
-    Button convolutionButton, correlationButton, smootheningButton, sharpeningButton;
+    Button convolutionButton, correlationButton, smootheningButton, sharpeningButton, fourierButton;
     ImageButton undoButton, redoButton, saveButton;
 
     public static UndoRedoStack urStack;
@@ -64,6 +64,7 @@ public class ImageEditorActivity extends AppCompatActivity {
         correlationButton = findViewById(R.id.correlationButton);
         smootheningButton = findViewById(R.id.smootheningButton);
         sharpeningButton = findViewById(R.id.sharpeningButton);
+        fourierButton = findViewById(R.id.fourierButton);
 
         undoButton = findViewById(R.id.undoButton);
         redoButton = findViewById(R.id.redoButton);
@@ -102,6 +103,11 @@ public class ImageEditorActivity extends AppCompatActivity {
         sharpeningButton.setOnClickListener(view -> {
             DialogFragment smoothingPickerDialogFragment = new SmoothingPickerDialogFragment(SmoothingPickerDialogFragment.SHARPENING);
             smoothingPickerDialogFragment.show(getSupportFragmentManager(), "FilterSelect");
+        });
+
+        fourierButton.setOnClickListener(view -> {
+            DialogFragment fourierDialogFragment = new FourierDialogFragment();
+            fourierDialogFragment.show(getSupportFragmentManager(), "Fourier");
         });
 
         undoButton.setOnClickListener(view -> {
