@@ -8,6 +8,8 @@ import org.opencv.core.Mat;
 import org.opencv.core.Core;
 import org.opencv.core.Scalar;
 
+
+
 import androidx.fragment.app.FragmentActivity;
 
 public class SmoothingSharpeningOperations extends Operations implements SmoothingPickerDialogFragment.SmoothingListener, SmoothingPickerDialogFragment.SharpeningListener{
