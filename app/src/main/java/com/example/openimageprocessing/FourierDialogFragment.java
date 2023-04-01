@@ -72,7 +72,6 @@ public class FourierDialogFragment extends DialogFragment {
         Mat src = new Mat();
         Utils.bitmapToMat(imageLoader, src);
         Imgproc.cvtColor(src, src, Imgproc.COLOR_BGRA2GRAY);
-        System.out.println("src : " + src.type());
 
         Mat padded = new Mat();                     //expand input image to optimal size
         int m = Core.getOptimalDFTSize( src.rows() );
@@ -83,10 +82,8 @@ public class FourierDialogFragment extends DialogFragment {
         planes.add(padded);
         planes.add(Mat.zeros(padded.size(), CvType.CV_32FC1));
 
-        System.out.println(planes.get(1).type());
         Mat complexI = new Mat();
         Core.merge(planes, complexI);         // Add to the expanded another plane with zeros
-        System.out.println(complexI.type());
 
         Core.dft(complexI, complexI);         // this way the result may fit in the source matrix
 
