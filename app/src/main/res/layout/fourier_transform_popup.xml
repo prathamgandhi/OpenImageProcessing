@@ -5,80 +5,99 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/Amplitude"
+        android:layout_width="195dp"
+        android:layout_height="164dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.07"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <TextView
         android:id="@+id/phasetext"
-        android:layout_width="193dp"
-        android:layout_height="29dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="1dp"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Phase"
+        android:padding="10dp"
         android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Amplitude"
-        app:layout_constraintVertical_bias="0.0" />
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/phase"
+        app:layout_constraintVertical_bias="0.02" />
 
-    <ImageView
-        android:id="@+id/phase"
-        android:layout_width="197dp"
-        android:layout_height="203dp"
-        android:layout_marginBottom="624dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.453"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+
 
     <!-- tools:srcCompat="@tools:sample/avatars"  -->
 
     <ImageView
-        android:id="@+id/Amplitude"
-        android:layout_width="197dp"
-        android:layout_height="203dp"
-        android:layout_marginBottom="344dp"
+        android:id="@+id/phase"
+        android:layout_width="195dp"
+        android:layout_height="164dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phase"
+        app:layout_constraintTop_toBottomOf="@+id/Amplitudetext"
+        app:layout_constraintVertical_bias="0.07"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/Amplitudetext"
-        android:layout_width="193dp"
-        android:layout_height="29dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="1dp"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Amplitude"
+        android:padding="10dp"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/Amplitude"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phase"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/Amplitude"
+        app:layout_constraintVertical_bias="0.02"
         tools:srcCompat="@tools:sample/avatars" />
 
 
 
     <Button
         android:id="@+id/merge2images"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Merge two images using FFT"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="10dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phasetext" />
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/phasetext"/>
 
     <Button
         android:id="@+id/convtheorem"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Using Convolution Theorem"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="10dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        app:layout_constraintVertical_bias="1"
+        android:layout_marginBottom="20dp"
         app:layout_constraintTop_toBottomOf="@+id/merge2images" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
