@@ -57,7 +57,7 @@ public class FourierDialogFragment extends DialogFragment {
 
     ImageView imageEditorView;
     ActivityResultLauncher<Intent> mergeImagesOnResult;
-
+    Bitmap bmp2;
 
     public interface FourierListener{
            
@@ -81,8 +81,8 @@ public class FourierDialogFragment extends DialogFragment {
         Bitmap imageLoader = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
         Mat src = new Mat();
         Utils.bitmapToMat(imageLoader, src);
+/*
         Imgproc.cvtColor(src, src, Imgproc.COLOR_BGRA2GRAY);
-
         Mat padded = new Mat();                     //expand input image to optimal size
         int m = Core.getOptimalDFTSize( src.rows() );
         int n = Core.getOptimalDFTSize( src.cols() ); // on the border add zero values
@@ -104,6 +104,12 @@ public class FourierDialogFragment extends DialogFragment {
         Mat phaseI = new Mat(src.rows(), src.cols(), src.type());
         Core.magnitude(planes.get(0), planes.get(1), magI);// planes.get(0) = magnitude
         Core.phase(planes.get(0), planes.get(1), phaseI);
+*/
+        Utility.MagnitudePhasePair MPP = Utility.getFourierMagnitudePhase(src);
+        Mat magI = MPP.mag;
+        Mat phaseI = MPP.phase;
+        Mat mat1mag = magI;
+        Mat mat1phase = phaseI;
 
         Mat matOfOnesMag = Mat.ones(magI.size(), magI.type());
         Core.add(matOfOnesMag, magI, magI);         // switch to logarithmic scale
@@ -177,6 +183,10 @@ public class FourierDialogFragment extends DialogFragment {
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
 
                 mergeImagesOnResult.launch(chooserIntent);
+                Mat mat2 = new Mat();
+                Utils.bitmapToMat(bmp2, src);
+                Imgproc.cvtColor(mat2, mat2, Imgproc.COLOR_BGRA2GRAY);
+
             });
         });
 
@@ -199,9 +209,6 @@ public class FourierDialogFragment extends DialogFragment {
                             Intent data = result.getData();
                             if(data != null && data.getData() != null){
                                 Uri selectedImageUri = data.getData();
-                                
-                                // Move over to the image editor activity
-                                Bitmap bmp2;
                                 try {
                                     bmp2 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
                                     Mat mat = new Mat();
