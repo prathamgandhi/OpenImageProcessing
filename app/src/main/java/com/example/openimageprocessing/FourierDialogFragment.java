@@ -22,10 +22,18 @@ import android.widget.Toast;
 import android.widget.ImageView;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.content.Intent;
+import android.provider.MediaStore;
+import android.net.Uri;
+import android.app.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import org.opencv.core.Mat;
 import org.opencv.android.Utils;
@@ -37,6 +45,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 
 import org.w3c.dom.Text;
 
@@ -47,6 +56,7 @@ public class FourierDialogFragment extends DialogFragment {
     private static final String TAG = "FourierDialogFrag";
 
     ImageView imageEditorView;
+    ActivityResultLauncher<Intent> mergeImagesOnResult;
 
 
     public interface FourierListener{
@@ -152,9 +162,25 @@ public class FourierDialogFragment extends DialogFragment {
         magnitudeLoaderView.setImageBitmap(magnitudeLoader);
         phaseLoaderView.setImageBitmap(phaseLoader);
 
+
         dialog.setOnShowListener(dialogInterface -> {
-            
+            Button mergeImageButton = fourierTransformDialogView.findViewById(R.id.merge2images);
+
+            mergeImageButton.setOnClickListener(view1 -> {
+                Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                getIntent.setType("image/*");
+
+                Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickIntent.setType("image/*");
+
+                Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+                mergeImagesOnResult.launch(chooserIntent);
+            });
         });
+
+        
 
         return dialog;
     }
@@ -163,6 +189,32 @@ public class FourierDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try{
+
+            mergeImagesOnResult = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == Activity.RESULT_OK){
+                            Intent data = result.getData();
+                            if(data != null && data.getData() != null){
+                                Uri selectedImageUri = data.getData();
+                                
+                                // Move over to the image editor activity
+                                Bitmap bmp2;
+                                try {
+                                    bmp2 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                                    Mat mat = new Mat();
+                                    Utils.bitmapToMat(bmp2.copy(Bitmap.Config.ARGB_8888, true), mat);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+
             // SmoothingSharpeningOperations smoothingSharpeningListener = new SmoothingSharpeningOperations(getActivity());
             // smoothingListener = smoothingSharpeningListener;
             // sharpeningListener = smoothingSharpeningListener;
