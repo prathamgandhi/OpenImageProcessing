@@ -141,7 +141,9 @@
             </Button>
 
             <Button
-                android:id="@+id/morphologicalButton"
+                android:id="@+id/emojifyButton"
+                android:text="Emojify"
+                android:textSize="8sp"
                 style="@style/ImageEditingButtonStyle">
 
             </Button>

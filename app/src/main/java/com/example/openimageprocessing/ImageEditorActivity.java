@@ -30,6 +30,8 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.dnn.Net;
+import org.opencv.dnn.Dnn;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -39,8 +41,11 @@ public class ImageEditorActivity extends AppCompatActivity {
 
     ImageView imageEditorView;
     ImageButton backButton;
-    Button convolutionButton, correlationButton, smootheningButton, sharpeningButton, fourierButton;
+    Button convolutionButton, correlationButton, smootheningButton, sharpeningButton, fourierButton, emojifyButton;
     ImageButton undoButton, redoButton, saveButton;
+
+    private final String emojifyModel = "emotion-ferplus-8.onnx";
+    Net emojifyNet = null;
 
     public static UndoRedoStack urStack;
 
@@ -65,6 +70,7 @@ public class ImageEditorActivity extends AppCompatActivity {
         smootheningButton = findViewById(R.id.smootheningButton);
         sharpeningButton = findViewById(R.id.sharpeningButton);
         fourierButton = findViewById(R.id.fourierButton);
+        emojifyButton = findViewById(R.id.emojifyButton);
 
         undoButton = findViewById(R.id.undoButton);
         redoButton = findViewById(R.id.redoButton);
@@ -108,6 +114,15 @@ public class ImageEditorActivity extends AppCompatActivity {
         fourierButton.setOnClickListener(view -> {
             DialogFragment fourierDialogFragment = new FourierDialogFragment();
             fourierDialogFragment.show(getSupportFragmentManager(), "Fourier");
+        });
+
+        emojifyButton.setOnClickListener(view -> {
+            // here we always check if we don't already have a model, if not checked then we are doing more work always loading the model
+            if(emojifyNet == null){
+                String modelPath = Utility.getPath(emojifyModel, this);
+                emojifyNet = Dnn.readNetFromONNX(modelPath);
+            }
+            
         });
 
         undoButton.setOnClickListener(view -> {

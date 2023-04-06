@@ -3,7 +3,8 @@ package com.example.openimageprocessing;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
-
+import android.util.Log;
+import android.content.res.AssetManager;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Core;
@@ -14,6 +15,10 @@ import org.opencv.core.Scalar;
 import java.util.List;
 import java.util.ArrayList;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 // Containing all the random functions required to perform utility actions
 
 public final class Utility {
@@ -59,6 +64,30 @@ public final class Utility {
             this.mag = mag;
             this.phase = phase;
         }
+    }
+
+        // Upload file to storage and return a path.
+    public static String getPath(String file, Context context) {
+        String TAG = "GetFilePath";
+        AssetManager assetManager = context.getAssets();
+        BufferedInputStream inputStream = null;
+        try {
+            // Read data from assets.
+            inputStream = new BufferedInputStream(assetManager.open(file));
+            byte[] data = new byte[inputStream.available()];
+            inputStream.read(data);
+            inputStream.close();
+            // Create copy file in storage.
+            File outFile = new File(context.getFilesDir(), file);
+            FileOutputStream os = new FileOutputStream(outFile);
+            os.write(data);
+            os.close();
+            // Return a path to file which may be read in common way.
+            return outFile.getAbsolutePath();
+        } catch (IOException ex) {
+            Log.i(TAG, "Failed to upload a file");
+        }
+        return "";
     }
 }
 

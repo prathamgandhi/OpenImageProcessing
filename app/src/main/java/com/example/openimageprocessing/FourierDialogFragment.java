@@ -81,30 +81,7 @@ public class FourierDialogFragment extends DialogFragment {
         Bitmap imageLoader = ((BitmapDrawable)imageEditorView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
         Mat src = new Mat();
         Utils.bitmapToMat(imageLoader, src);
-/*
-        Imgproc.cvtColor(src, src, Imgproc.COLOR_BGRA2GRAY);
-        Mat padded = new Mat();                     //expand input image to optimal size
-        int m = Core.getOptimalDFTSize( src.rows() );
-        int n = Core.getOptimalDFTSize( src.cols() ); // on the border add zero values
-        Core.copyMakeBorder(src, padded, 0, m - src.rows(), 0, n - src.cols(), Core.BORDER_CONSTANT, Scalar.all(0));
-        List<Mat> planes = new ArrayList<Mat>();
-        padded.convertTo(padded, CvType.CV_32FC1);
-        planes.add(padded);
-        planes.add(Mat.zeros(padded.size(), CvType.CV_32FC1));
 
-        Mat complexI = new Mat();
-        Core.merge(planes, complexI);         // Add to the expanded another plane with zeros
-
-        Core.dft(complexI, complexI);         // this way the result may fit in the source matrix
-
-        Core.split(complexI, planes);                               // planes.get(0) = Re(DFT(I)
-                                                                    // planes.get(1) = Im(DFT(I))
-
-        Mat magI = new Mat(src.rows(), src.cols(), src.type());
-        Mat phaseI = new Mat(src.rows(), src.cols(), src.type());
-        Core.magnitude(planes.get(0), planes.get(1), magI);// planes.get(0) = magnitude
-        Core.phase(planes.get(0), planes.get(1), phaseI);
-*/
         Utility.MagnitudePhasePair MPP = Utility.getFourierMagnitudePhase(src);
         Mat magI = MPP.mag;
         Mat phaseI = MPP.phase;
