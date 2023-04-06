@@ -10,7 +10,11 @@ import org.opencv.core.Mat;
 import org.opencv.core.Size;
 
 import java.util.List;
+
+import android.graphics.drawable.Drawable; 
 import androidx.fragment.app.FragmentActivity;
+import android.app.Activity; 
+import androidx.core.content.ContextCompat;
 
 public class EmojificationOperations extends Operations{
 
@@ -25,10 +29,13 @@ public class EmojificationOperations extends Operations{
         "Contempt"
     };
 
+    FragmentActivity activity;
+
     Net emojifyNet;
     CascadeClassifier faceDetectionHaarCascadeClassifier;
     EmojificationOperations(Net emojifyNet, CascadeClassifier faceDetectionHaarCascadeClassifier, FragmentActivity activity){
         super(activity);
+        this.activity = activity;
         this.emojifyNet = emojifyNet;
         this.faceDetectionHaarCascadeClassifier = faceDetectionHaarCascadeClassifier;
     }
@@ -46,6 +53,14 @@ public class EmojificationOperations extends Operations{
             emojifyNet.setInput(blob);
             Mat detections = emojifyNet.forward();
             System.out.println(detections.dump());
+            
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                    public void run() {
+                        Drawable drawable = ContextCompat.getDrawable(activity, R.drawable.smiley);
+                    }
+                });
+             
         }
 
     }
