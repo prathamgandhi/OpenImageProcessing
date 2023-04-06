@@ -32,6 +32,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.dnn.Net;
 import org.opencv.dnn.Dnn;
+import org.opencv.objdetect.CascadeClassifier;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -45,7 +46,12 @@ public class ImageEditorActivity extends AppCompatActivity {
     ImageButton undoButton, redoButton, saveButton;
 
     private final String emojifyModel = "emotion-ferplus-8.onnx";
+    private final String faceDetectionHaarClassifierModel = "haarcascade_frontalface_alt.xml";
+
     Net emojifyNet = null;
+    CascadeClassifier faceDetectHaarCascadeClassifier = null;
+
+    EmojificationOperations emojificationOperations;
 
     public static UndoRedoStack urStack;
 
@@ -118,11 +124,19 @@ public class ImageEditorActivity extends AppCompatActivity {
 
         emojifyButton.setOnClickListener(view -> {
             // here we always check if we don't already have a model, if not checked then we are doing more work always loading the model
-            if(emojifyNet == null){
-                String modelPath = Utility.getPath(emojifyModel, this);
-                emojifyNet = Dnn.readNetFromONNX(modelPath);
-            }
-            
+            new Thread(() -> {
+                if(emojifyNet == null){
+                    String modelPath = Utility.getPath(emojifyModel, this);
+                    emojifyNet = Dnn.readNetFromONNX(modelPath);
+                }
+                if(faceDetectHaarCascadeClassifier == null){
+                    faceDetectHaarCascadeClassifier = new CascadeClassifier();
+                    faceDetectHaarCascadeClassifier.load(Utility.getPath(faceDetectionHaarClassifierModel, this));
+                }
+                emojificationOperations = new EmojificationOperations(emojifyNet, this);
+
+            }).start();
+                        
         });
 
         undoButton.setOnClickListener(view -> {
