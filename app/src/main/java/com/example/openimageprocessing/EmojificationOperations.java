@@ -12,11 +12,14 @@ import org.opencv.core.Core;
 import org.opencv.core.Scalar;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.graphics.Canvas;
 import android.graphics.Paint; 
 import android.graphics.Color; 
 import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 
 import androidx.fragment.app.FragmentActivity;
 import android.app.Activity; 
@@ -24,12 +27,23 @@ import androidx.core.content.ContextCompat;
 
 
 public class EmojificationOperations extends Operations{
+    
+    private final HashMap<String, Integer> emotionVectorMapping = new HashMap<String, Integer>() {{
+        put("Neutral", R.drawable.neutral_emoji_vector);
+        put("Happy", R.drawable.happy_emoji_vector);
+        put("Surprise", R.drawable.surprise_emoji_vector);
+        put("Sad", R.drawable.sad_emoji_vector); 
+        put("Angry", R.drawable.angry_emoji_vector);
+        put("Disgusted", R.drawable.disgusted_emoji_vector);
+        put("Afraid", R.drawable.afraid_emoji_vector);
+        put("Contempt", R.drawable.contempt_emoji_vector);
+    }};
 
-    String emotions[] = {
+    private final String emotions[] = {
         "Neutral",
         "Happy",
         "Surprise",
-        "Sad", 
+        "Sad",
         "Angry",
         "Disgusted",
         "Afraid",
@@ -79,15 +93,16 @@ public class EmojificationOperations extends Operations{
 
             // We need to get the index where the maximum value is obtained 
             Core.MinMaxLocResult res = Core.minMaxLoc(softmax);
-            System.out.println(emotions[(int)res.maxLoc.x]);
             // create a canvas from our bitmap for drawing purposes
-            Canvas c = new Canvas(imageLoader);
-            c.drawRect(new android.graphics.Rect(face.x, face.y, face.x + face.width, face.y + face.height), p);
+            Drawable emojiDrawable = ContextCompat.getDrawable(activity, emotionVectorMapping.get(emotions[(int)res.maxLoc.x]));
+            Bitmap emojiBitmap = Bitmap.createBitmap(emojiDrawable.getIntrinsicWidth(), emojiDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(imageLoader);
+            emojiDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            emojiDrawable.draw(canvas);
             activity.runOnUiThread(new Runnable() {
                 @Override
                     public void run() {
                         loadBitmapInImageAfterProcessing();
-                        Drawable drawable = ContextCompat.getDrawable(activity, R.drawable.smiley);
                     }
                 });
              
