@@ -30,9 +30,9 @@ public class EmojificationOperations extends Operations{
         "Happy",
         "Surprise",
         "Sad", 
-        "Anger",
-        "Disgust",
-        "Fear",
+        "Angry",
+        "Disgusted",
+        "Afraid",
         "Contempt"
     };
 
@@ -77,6 +77,9 @@ public class EmojificationOperations extends Operations{
             Scalar inverseSumExp = new Scalar(1/sumExp.val[0]);
             Core.multiply(softmax, inverseSumExp, softmax);
 
+            // We need to get the index where the maximum value is obtained 
+            Core.MinMaxLocResult res = Core.minMaxLoc(softmax);
+            System.out.println(emotions[(int)res.maxLoc.x]);
             // create a canvas from our bitmap for drawing purposes
             Canvas c = new Canvas(imageLoader);
             c.drawRect(new android.graphics.Rect(face.x, face.y, face.x + face.width, face.y + face.height), p);
