@@ -36,4 +36,8 @@ public class Operations {
         urStack.newOperation(dst);
         imageEditorView.setImageBitmap(imageLoader);
     } 
+
+    protected void loadBitmapInImageAfterProcessing(){
+        imageEditorView.setImageBitmap(imageLoader);
+    }
 }
