@@ -97,6 +97,16 @@ public class EmojificationOperations extends Operations{
             Drawable emojiDrawable = ContextCompat.getDrawable(activity, emotionVectorMapping.get(emotions[(int)res.maxLoc.x]));
             Bitmap emojiBitmap = Bitmap.createBitmap(emojiDrawable.getIntrinsicWidth(), emojiDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(imageLoader);
+
+
+            /*
+
+            All the emojis have been borrowed from https://openmoji.org
+
+            Since the emojis have a ratio of 2 blank spaces per height of 6 spaces, the following offsets have been calculated to ensure that the emojis fit
+            properly on the faces.
+
+            */
             int offsetHeight = (int) (face.height * 1.5);
             int offsetWidth = (int) (face.width * 1.5);
             int offsetX = (int) face.x - (int)(offsetWidth/6);
