@@ -38,6 +38,8 @@ public class Operations {
     } 
 
     protected void loadBitmapInImageAfterProcessing(){
+        Utils.bitmapToMat(imageLoader, dst);
+        urStack.newOperation(dst);
         imageEditorView.setImageBitmap(imageLoader);
     }
 }

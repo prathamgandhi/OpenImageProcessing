@@ -97,16 +97,21 @@ public class EmojificationOperations extends Operations{
             Drawable emojiDrawable = ContextCompat.getDrawable(activity, emotionVectorMapping.get(emotions[(int)res.maxLoc.x]));
             Bitmap emojiBitmap = Bitmap.createBitmap(emojiDrawable.getIntrinsicWidth(), emojiDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(imageLoader);
-            emojiDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            int offsetHeight = (int) (face.height * 1.5);
+            int offsetWidth = (int) (face.width * 1.5);
+            int offsetX = (int) face.x - (int)(offsetWidth/6);
+            int offsetY = (int) face.y - (int)(offsetHeight/6);
+            emojiDrawable.setBounds(new android.graphics.Rect(offsetX, offsetY, offsetX + offsetWidth, offsetY + offsetHeight));
+
             emojiDrawable.draw(canvas);
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                    public void run() {
-                        loadBitmapInImageAfterProcessing();
-                    }
-                });
+            
              
         }
-
+        activity.runOnUiThread(new Runnable() {
+            @Override
+                public void run() {
+                    loadBitmapInImageAfterProcessing();
+                }
+            });
     }
 }
