@@ -25,6 +25,7 @@ public class FourierTransformOperations extends Operations implements FourierDia
         Mat newMat1Im = new Mat();
         Mat newMat2Re = new Mat();
         Mat newMat2Im = new Mat();
+        // Core.copyMakeBorder(src, dst, top, left)
         Core.copyMakeBorder(mat1mag, mat1mag, 0, mat1mag.rows() + Math.max(mat1mag.rows(), mat2phase.rows()) - Math.min(mat1mag.rows(), mat2phase.rows()), 0,
                                 mat1mag.cols() + Math.max(mat1mag.cols(), mat2phase.cols()) - Math.min(mat1mag.cols(), mat2phase.cols()), Core.BORDER_CONSTANT, Scalar.all(0));
         Core.copyMakeBorder(mat2phase, mat2phase, 0, mat2phase.rows() + Math.max(mat1mag.rows(), mat2phase.rows()) - Math.min(mat1mag.rows(), mat2phase.rows()), 0,
