@@ -58,9 +58,10 @@ public class FourierDialogFragment extends DialogFragment {
     ImageView imageEditorView;
     ActivityResultLauncher<Intent> mergeImagesOnResult;
     Bitmap bmp2;
+    Mat mat2, mat1mag, mat1phase;
 
     public interface FourierListener{
-           
+        void performMagnitudePhaseMerge(Mat mat1mag, Mat mat1phase, Mat mat2);
     }
 
     public FourierListener fourierListener;
@@ -85,8 +86,8 @@ public class FourierDialogFragment extends DialogFragment {
         Utility.MagnitudePhasePair MPP = Utility.getFourierMagnitudePhase(src);
         Mat magI = MPP.mag;
         Mat phaseI = MPP.phase;
-        Mat mat1mag = magI;
-        Mat mat1phase = phaseI;
+        mat1mag = magI;
+        mat1phase = phaseI;
 
         Mat matOfOnesMag = Mat.ones(magI.size(), magI.type());
         Core.add(matOfOnesMag, magI, magI);         // switch to logarithmic scale
@@ -160,9 +161,6 @@ public class FourierDialogFragment extends DialogFragment {
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
 
                 mergeImagesOnResult.launch(chooserIntent);
-                Mat mat2 = new Mat();
-                Utils.bitmapToMat(bmp2, src);
-                Imgproc.cvtColor(mat2, mat2, Imgproc.COLOR_BGRA2GRAY);
 
             });
         });
@@ -188,8 +186,10 @@ public class FourierDialogFragment extends DialogFragment {
                                 Uri selectedImageUri = data.getData();
                                 try {
                                     bmp2 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                                    Mat mat = new Mat();
-                                    Utils.bitmapToMat(bmp2.copy(Bitmap.Config.ARGB_8888, true), mat);
+                                    mat2 = new Mat();
+                                    Utils.bitmapToMat(bmp2.copy(Bitmap.Config.ARGB_8888, true), mat2);
+                                    fourierListener.performMagnitudePhaseMerge(mat1mag, mat1phase, mat2);
+                                    getDialog().dismiss();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -198,6 +198,8 @@ public class FourierDialogFragment extends DialogFragment {
                     }
                 }
             );
+
+            fourierListener = new FourierTransformOperations(getActivity());
 
             // SmoothingSharpeningOperations smoothingSharpeningListener = new SmoothingSharpeningOperations(getActivity());
             // smoothingListener = smoothingSharpeningListener;

@@ -74,6 +74,10 @@ public class EmojificationOperations extends Operations{
         MatOfRect faces = new MatOfRect();
         faceDetectionHaarCascadeClassifier.detectMultiScale(src, faces);
         List<Rect> listOfFaces = faces.toList();
+
+
+        
+
         for(Rect face : listOfFaces){
             // We get the region of interest from our actual image by sampling the face
             Mat faceROI = src.submat(face);

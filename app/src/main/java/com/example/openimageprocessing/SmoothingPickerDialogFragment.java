@@ -162,7 +162,7 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
                             Button goButton = smootheningSharpeningDialogView.findViewById(R.id.ssOperation);
                             goButton.setOnClickListener(view1 -> {
                                 int kernelSize = Integer.parseInt(kernelSizeEditText.getText().toString());
-                                if(kernelSize % 2 == 0){
+                                if(kernelSize % 2 == 0 && kernelSize != 0){
                                     Toast.makeText(getActivity(),"KernelSize should be odd or 0",Toast.LENGTH_LONG).show();
                                 }
                                 else{
