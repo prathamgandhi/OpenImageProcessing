@@ -148,7 +148,6 @@ public class FourierDialogFragment extends DialogFragment {
 
 
         dialog.setOnShowListener(dialogInterface -> {
-            /*
             Button mergeImageButton = fourierTransformDialogView.findViewById(R.id.merge2images);
 
             mergeImageButton.setOnClickListener(view1 -> {
@@ -164,7 +163,6 @@ public class FourierDialogFragment extends DialogFragment {
                 mergeImagesOnResult.launch(chooserIntent);
 
             });
-            */
         });
 
         
