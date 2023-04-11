@@ -42,7 +42,7 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
 
     public interface SmoothingListener{
         void performNormalizedBoxFilter(int kernelSize);
-        void performSquareBoxFilter(int kernelSize, boolean normalize);
+        void performBilateralFiltering(int d, double sigmaColor, double sigmaSpace);
         void performGaussianFilter(int kernelSize, double sigma);
         void performMedianFilter(int kernelSize);
     }
@@ -114,28 +114,39 @@ public class SmoothingPickerDialogFragment extends DialogFragment {
                                 getDialog().dismiss();
                             });
                         }
-                        else if(adapterView.getItemAtPosition(pos) == getString(R.string.square_box_filter)){
+                        else if(adapterView.getItemAtPosition(pos) == getString(R.string.bilateral_filter)){
                             LinearLayout ll = smootheningSharpeningDialogView.findViewById(R.id.dataFetchLinearLayout);
                             ll.removeAllViews();
-                            EditText et = new EditText(getActivity());
-                            TextView tvKernel = new TextView(getActivity());
-                            TextView tvNormalize = new TextView(getActivity());
+                            EditText dEditText = new EditText(getActivity());
+                            EditText sigmaColorEditText = new EditText(getActivity());
+                            EditText sigmaSpaceEditText = new EditText(getActivity());
+                            TextView dTextView = new TextView(getActivity());
+                            TextView sigmaColorTextView = new TextView(getActivity());
+                            TextView sigmaSpaceTextView = new TextView(getActivity());
                             LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                            et.setLayoutParams(p);
-                            et.setInputType(InputType.TYPE_CLASS_NUMBER);
-                            tvKernel.setText("Enter Kernel Size : ");
-                            tvNormalize.setText("Flip to normalize");
-                            Switch sswitch = new Switch(getActivity());
+                            dEditText.setLayoutParams(p);
+                            dEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            sigmaColorEditText.setLayoutParams(p);
+                            sigmaColorEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            sigmaSpaceEditText.setLayoutParams(p);
+                            sigmaSpaceEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            dTextView.setText("Enter diameter of pixel value (< 5) : ");
+                            sigmaColorTextView.setText("Sigma filter in color space : ");
+                            sigmaSpaceTextView.setText("Sigma filter in coordinate space : ");
 
-                            ll.addView(tvKernel);
-                            ll.addView(et);
-                            ll.addView(tvNormalize);
-                            ll.addView(sswitch);
+                            ll.addView(dTextView);
+                            ll.addView(dEditText);
+                            ll.addView(sigmaColorTextView);
+                            ll.addView(sigmaColorEditText);
+                            ll.addView(sigmaSpaceTextView);
+                            ll.addView(sigmaSpaceEditText);
 
                             Button goButton = smootheningSharpeningDialogView.findViewById(R.id.ssOperation);
                             goButton.setOnClickListener(view1 -> {
-                                int kernelSize = Integer.parseInt(et.getText().toString());
-                                smoothingListener.performSquareBoxFilter(kernelSize, sswitch.isChecked());
+                                int d = Integer.parseInt(dEditText.getText().toString());
+                                double sigmaColor = Double.parseDouble(sigmaColorEditText.getText().toString());
+                                double sigmaSpace = Double.parseDouble(sigmaSpaceEditText.getText().toString());
+                                smoothingListener.performBilateralFiltering(d, sigmaColor, sigmaSpace);
                                 getDialog().dismiss();
                             });
                         }

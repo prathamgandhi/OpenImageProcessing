@@ -26,15 +26,17 @@ public class SmoothingSharpeningOperations extends Operations implements Smoothi
     }
 
     @Override
-    public void performSquareBoxFilter(int kernelSize, boolean normalize) {
+    public void performBilateralFiltering(int d, double sigmaColor, double sigmaSpace) {
         loadImageInMatForProcessing();
-        Imgproc.sqrBoxFilter(src, dst, CvType.CV_8UC3, new Size(kernelSize, kernelSize), new Point(-1, -1), normalize);
+        Imgproc.bilateralFilter(src, dst, d, sigmaColor, sigmaSpace);
         loadMatInImageAfterProcessing();
     } 
 
     @Override
     public void performGaussianFilter(int kernelSize, double sigma){
         loadImageInMatForProcessing();
+        Imgproc.cvtColor(src, src, Imgproc.COLOR_BGRA2BGR);
+        System.out.println(src.channels());
         Imgproc.GaussianBlur(src, dst, new Size(kernelSize, kernelSize), sigma);
         loadMatInImageAfterProcessing();
     }

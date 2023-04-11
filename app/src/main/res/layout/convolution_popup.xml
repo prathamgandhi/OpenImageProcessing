@@ -28,7 +28,7 @@
             android:layout_marginLeft="8dp"
             android:background="@drawable/boxed_edit_text"
             android:hint="Scalar Multiplier"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:padding="5dp"
             app:layout_constraintLeft_toRightOf="@id/kernelSizeEditText"
             tools:layout_editor_absoluteY="122dp" />

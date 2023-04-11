@@ -18,6 +18,7 @@ public class ConvolutionCorrelationOperations extends Operations implements Kern
     @Override
     public void sendConvolutionInput(Mat kernel) {
         Core.flip(kernel, kernel, -1);
+        System.out.println(kernel.dump());
         loadImageInMatForProcessing();
         Imgproc.filter2D(src, dst, CvType.CV_8U, kernel);
         loadMatInImageAfterProcessing();
@@ -26,6 +27,7 @@ public class ConvolutionCorrelationOperations extends Operations implements Kern
     @Override
     public void sendCorrelationInput(Mat kernel) {
         loadImageInMatForProcessing();
+        System.out.println(kernel.dump());
         Imgproc.filter2D(src, dst, CvType.CV_8U, kernel);
         loadMatInImageAfterProcessing();
     }
